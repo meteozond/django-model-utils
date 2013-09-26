@@ -27,7 +27,7 @@ from model_utils.tests.models import (
     TimeFrameManagerAdded, Dude, SplitFieldAbstractParent, Car, Spot,
     ModelTracked, ModelTrackedFK, ModelTrackedNotDefault, ModelTrackedMultiple, InheritedModelTracked,
     Tracked, TrackedFK, TrackedNotDefault, TrackedNonFieldAttr, TrackedMultiple,
-    InheritedTracked, StatusFieldDefaultFilled, StatusFieldDefaultNotFilled)
+    InheritedTracked, StatusFieldDefaultFilled, StatusFieldDefaultNotFilled, DudeQuerySet)
 
 
 class GetExcerptTests(TestCase):
@@ -832,6 +832,11 @@ class PassThroughManagerTests(TestCase):
         dude = Dude.objects.by_name('Duder').get()
         Car.objects.create(name='Ford', owner=dude)
         self.assertFalse(hasattr(dude.cars_owned, 'by_name'))
+
+
+    def test_queryset_values_method(self):
+        self.assertIsInstance(Dude.objects.filter(), DudeQuerySet)
+        self.assertIsInstance(Dude.objects.values(), DudeQuerySet)
 
 
 class CreatePassThroughManagerTests(TestCase):
